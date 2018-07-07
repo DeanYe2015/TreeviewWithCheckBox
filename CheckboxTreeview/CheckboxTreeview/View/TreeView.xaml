@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="CheckboxTreeview.View.TreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CheckboxTreeview.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <DockPanel>            
+            <Border>
+                <TreeView Name="treeView">                    
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}"></Setter>
+                            <EventSetter Event="TreeViewItem.PreviewMouseRightButtonDown" Handler="TreeViewItem_PreviewMouseRightButtonDown"/>
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.ItemTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type local:TreeModel}"  ItemsSource="{Binding Children}">
+                            <StackPanel  Margin="-2,0,0,0" Orientation="Horizontal" x:Name="staTree">
+                                <CheckBox ToolTip="{Binding ToolTip}" FontSize="14" Tag="{Binding Children}" IsChecked="{Binding IsChecked, Mode=TwoWay}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image VerticalAlignment="Center" Source="{Binding Icon}" ></Image>
+                                        <TextBlock Text="{Binding Name}"></TextBlock>
+                                    </StackPanel>
+                                    <CheckBox.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Name="menuSelectAllChild" Header="Select All Child" Click="menuSelectAllChild_Click">                                               
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </CheckBox.ContextMenu>
+                                </CheckBox>
+                            </StackPanel>
+                            <HierarchicalDataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsChecked}" Value="true">
+                                    <Setter TargetName="staTree" Property="Background" Value="White"/>
+                                </DataTrigger>
+                            </HierarchicalDataTemplate.Triggers>
+                        </HierarchicalDataTemplate>
+                    </TreeView.ItemTemplate>
+                </TreeView>
+            </Border>
+        </DockPanel>
+    </Grid>
+</UserControl>
